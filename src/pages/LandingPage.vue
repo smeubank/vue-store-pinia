@@ -1,36 +1,56 @@
 <template>
   <div class="landing-page">
-    <h1>Welcome to My Store</h1>
-    <img src="/hero-image.jpg" alt="Hero Image" class="hero-image">
-    <div class="navigation-card">
-      <router-link to="/products">
-        <h2>Explore Our Products</h2>
-        <p>Find amazing deals on our wide range of products!</p>
-      </router-link>
+    <div class="hero">
+      <h1>Welcome to Pineapple Paradise</h1>
+      <p>Explore our amazing pineapple products!</p>
+      <router-link to="/products" class="hero-button">View Products</router-link>
     </div>
   </div>
 </template>
 
+<script setup>
+// You can add any necessary imports or logic here
+</script>
+
 <style scoped>
 .landing-page {
+  position: relative;
   text-align: center;
+  color: white;
 }
 
-.hero-image {
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 2rem;
+.hero {
+  background-image: url('/hero-image.jpg'); /* Update with actual path */
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
-.navigation-card {
-  border: 1px solid #ddd;
-  padding: 1rem;
-  max-width: 400px;
-  margin: 0 auto;
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2); /* Adjusted tint opacity */
+  z-index: -1;
 }
 
-.navigation-card a {
-  text-decoration: none;
+.hero-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #ffcc00;
   color: #333;
+  text-decoration: none;
+  border-radius: 5px;
+  z-index: 2;
 }
 </style>
