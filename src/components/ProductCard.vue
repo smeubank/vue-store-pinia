@@ -1,8 +1,11 @@
 <template>
   <div class="product-card">
     <h3>{{ product.name }}</h3>
-    <p>{{ product.price }}</p>
-    <button @click="addToCart" class="add-to-cart">Add to Cart</button>
+    <img :src="product.image" :alt="product.name" class="product-image" />
+    <div class="product-info">
+      <p>{{ product.price }}</p>
+      <button @click="addToCart" class="add-to-cart">Add to Cart</button>
+    </div>
   </div>
 </template>
 
@@ -24,23 +27,35 @@ function addToCart() {
   border: 1px solid #ddd;
   padding: 1rem;
   text-align: center;
-  background-image: url('/path/to/product-image.jpg'); /* Update with actual path */
   background-size: cover;
   background-position: center;
-  height: 200px;
-  color: white;
+  height: 350px; /* Adjusted height to accommodate image and text */
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-image {
+  width: 100%;
+  height: 150px; /* Adjust height as needed */
+  object-fit: contain; /* Ensures the image fits within the designated space */
+  margin-bottom: 1rem;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .add-to-cart {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
   background-color: #ffcc00;
   color: #333;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 0.5rem; /* Add some space between price and button */
 }
 </style>

@@ -8,13 +8,18 @@
     <nav class="right-nav">
       <router-link to="/checkout" class="cart-link">
         <i class="fas fa-shopping-cart"></i>
+        <span v-if="cartCount > 0" class="cart-count">{{ cartCount }}</span>
       </router-link>
     </nav>
   </header>
 </template>
 
 <script setup>
-// No additional setup needed for now
+import { computed } from 'vue'
+import { useCartStore } from '../store/cart'
+
+const cartStore = useCartStore()
+const cartCount = computed(() => cartStore.items.reduce((total, item) => total + item.quantity, 0))
 </script>
 
 <style scoped>
@@ -44,6 +49,7 @@ header {
 
 .right-nav {
   margin-right: 1rem;
+  position: relative;
 }
 
 h1 {
@@ -59,5 +65,18 @@ nav a {
 
 .cart-link {
   padding-right: 2rem; /* Increased padding from the right side of the screen */
+  position: relative;
+}
+
+.cart-count {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.8rem;
+  transform: translate(-50%, -50%);
 }
 </style>

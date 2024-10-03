@@ -15,16 +15,16 @@
 import { ref } from 'vue'
 import ProductCard from '../components/ProductCard.vue'
 
-// Sample product data
+// Sample product data with image paths
 const products = ref([
-  { id: 1, name: 'Product 1', price: '$19.99' },
-  { id: 2, name: 'Product 2', price: '$29.99' },
-  { id: 3, name: 'Product 3', price: '$39.99' },
-  { id: 4, name: 'Product 4', price: '$49.99' },
-  { id: 5, name: 'Product 5', price: '$59.99' },
-  { id: 6, name: 'Product 6', price: '$69.99' },
-  { id: 7, name: 'Product 7', price: '$79.99' },
-  { id: 8, name: 'Product 8', price: '$89.99' }
+  { id: 1, name: 'Whole Pineapple', price: '$19.99', image: '/pineapple.jpg' },
+  { id: 2, name: 'Canned Pineapple', price: '$29.99', image: '/canned-pineapple.jpg' },
+  { id: 3, name: 'Pineapple Juice', price: '$39.99', image: '/pineapple-juice.jpg' },
+  { id: 4, name: 'Pineapple Sauce', price: '$49.99', image: '/pineapple-sauce.jpg' },
+  { id: 5, name: 'Sliced Pineapple', price: '$59.99', image: '/sliced-pineapple.jpg' },
+  { id: 6, name: 'Pineapple Bar Soap', price: '$69.99', image: '/pineapple-bar-soap.jpg' },
+  { id: 7, name: 'Pineapple State Flag', price: '$79.99', image: '/pineapple-state-flag.jpg' },
+  { id: 8, name: 'Pineapple Hat', price: '$89.99', image: '/pineapple-hat.jpg' }
 ])
 </script>
 
