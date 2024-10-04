@@ -31,6 +31,9 @@ function increaseQuantity(itemId) {
   const item = cartStore.items.find(i => i.id === itemId)
   if (item) {
     cartStore.addItem(item)
+  } else {
+    // Introduce an error by trying to access a property of undefined
+    console.log(item.undefinedProperty)
   }
 }
 
@@ -40,6 +43,8 @@ function decreaseQuantity(itemId) {
     item.quantity -= 1
   } else {
     cartStore.removeItem(itemId)
+    // Introduce an error by trying to access a property of undefined
+    console.log(item.undefinedProperty)
   }
 }
 </script>

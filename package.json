@@ -13,6 +13,7 @@
   "description": "",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.6.0",
+    "@sentry/vite-plugin": "^2.22.5",
     "@sentry/vue": "^8.33.1",
     "pinia": "^2.1.0",
     "vue": "^3.3.0",
