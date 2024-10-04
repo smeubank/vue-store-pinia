@@ -19,7 +19,7 @@ export default defineConfig({
     }),
     // Add the Codecov plugin
     codecovVitePlugin({
-      enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+      enableBundleAnalysis: true,
       bundleName: "vue-store-pinia", // Replace with your bundle project name
       uploadToken: process.env.CODECOV_TOKEN,
     }),
