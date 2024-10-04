@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { sentryVitePlugin } from "@sentry/vite-plugin";
+import { codecovVitePlugin } from "@codecov/vite-plugin"; // Import the Codecov plugin
 import path from 'path'
 
 export default defineConfig({
@@ -15,6 +16,12 @@ export default defineConfig({
       org: "steven-eubank",
       project: "vue-store-pinia",
       authToken: process.env.SENTRY_AUTH_TOKEN,
+    }),
+    // Add the Codecov plugin
+    codecovVitePlugin({
+      enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+      bundleName: "vue-store-pinia", // Replace with your bundle project name
+      uploadToken: process.env.CODECOV_TOKEN,
     }),
   ],
 
