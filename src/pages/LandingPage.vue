@@ -1,14 +1,19 @@
 <template>
   <div class="landing-page">
-    <div class="hero">
-      <h1>Welcome to Pineapple Paradise</h1>
-      <p>Explore our amazing pineapple products!</p>
-      <router-link to="/products" class="hero-button">View Products</router-link>
-    </div>
-    <button @click="throwError" class="error-button">Simulate Error</button>
-    <div v-if="showErrorModal" class="error-modal">
-      <p>Oh no, there is an error! Would be nice if you had Sentry.</p>
-      <button @click="closeModal">Close</button>
+    <div class="grid-container">
+      <div class="card card-1">
+        <img src="/pineapple-paradise-logo.png" alt="Pineapple Paradise Logo" class="logo" />
+        <h2>Welcome to Paradise</h2>
+      </div>
+      <router-link to="/products" class="card card-2">
+        <h3>View our products</h3>
+      </router-link>
+      <div class="card card-3" @click="throwError">
+        <h3>Throw Error</h3>
+      </div>
+      <div class="card card-4" @click="simulateError">
+        <h3>Simulate Error</h3>
+      </div>
     </div>
   </div>
 </template>
@@ -19,8 +24,11 @@ import { ref } from 'vue'
 const showErrorModal = ref(false)
 
 function throwError() {
-  // Throw an unhandled error
   throw new Error('Simulated unhandled error for Sentry demonstration')
+}
+
+function simulateError() {
+  showErrorModal.value = true
 }
 
 function closeModal() {
@@ -30,69 +38,79 @@ function closeModal() {
 
 <style scoped>
 .landing-page {
-  position: relative;
-  text-align: center;
-  color: white;
-}
-
-.hero {
-  margin-top: 5rem; /* Add top margin to create space below the header */
-  background-image: url('/hero-image.jpg'); /* Update with actual path */
-  background-size: cover;
-  background-position: center;
-  width: 100%;
-  height: 60vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
-  z-index: 1;
+  height: 100vh;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.2); /* Adjusted tint opacity */
-  z-index: -1;
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 1rem; /* Ensure equal padding between cards */
+  justify-content: center; /* Center the grid horizontally */
+  align-items: center; /* Center the grid vertically */
+  height: 100vh; /* Make sure the grid fits within the viewport */
+  width: 100vw; /* Ensure the grid takes the full width of the viewport */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  padding: 1rem; /* Add padding around the grid */
 }
 
-.hero-button {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background-color: #ffcc00;
-  color: #333;
-  text-decoration: none;
-  border-radius: 5px;
-  z-index: 2;
-}
-
-.error-button {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background-color: #ff0000;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
   cursor: pointer;
+  padding: 1rem; /* Ensure equal padding inside each card */
 }
 
-.error-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-image: url('/error-modal.png'); /* Update with actual path */
-  background-size: cover;
-  background-position: center;
-  padding: 2rem;
-  border: 1px solid #ddd;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  color: white; /* Ensure text is readable on the background */
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add a larger shadow on hover */
+  transition: box-shadow 0.3s ease; /* Smooth transition for the shadow */
+}
+
+.card-1 {
+  grid-area: 1 / 1 / 3 / 4; /* Corresponds to .div1 */
+  margin-top: 3rem; /* Add padding above the first card */
+  background: linear-gradient(135deg, #e0d8b4, #e0d8b4, #e0d8b4, #e0d8b4, #e0d8b4, #e0d8b4, #e0d8b4, #e0d8b4);
+  transition: background 0.3s ease; /* Smooth transition for hover effect */
+  height: 350px; /* Set a fixed height to maintain the card size */
+}
+
+.card-1:hover {
+  background: linear-gradient(135deg, #e0d8b4, #e2d9bc, #e4dbc3, #e7deca, #e9e1d1, #ece4d8, #efe8df, #f2ece6);
+}
+
+.card-2 {
+  grid-area: 3 / 1 / 5 / 3; /* Corresponds to .div2 */
+  background-color: #58ec0d; /* Set the initial color */
+  transition: background 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.card-2:hover {
+  background: linear-gradient(135deg, #58ec0d, #87e800, #a5e427, #bae049, #cadd68, #d5da84, #ddd99d, #e0d8b4);
+}
+
+.card-3 {
+  grid-area: 3 / 3 / 4 / 4; /* Corresponds to .div3 */
+}
+
+.card-4 {
+  grid-area: 4 / 3 / 5 / 4; /* Corresponds to .div4 */
+}
+
+.logo {
+  max-width: 10%; /* Adjust the size as needed */
+  height: auto;
+  border-radius: 50%; /* Make the image oval */
+  object-fit: cover; /* Ensure the image covers the area */
+  aspect-ratio: 1 / 1; /* Maintain a square aspect ratio for the oval effect */
 }
 </style>

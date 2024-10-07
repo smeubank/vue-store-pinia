@@ -60,6 +60,7 @@ function decreaseQuantity(itemId) {
   border: 1px solid #ddd;
   padding: 1rem;
   margin-bottom: 1rem;
+  background: linear-gradient(135deg, #e0d8b4, #e2dcbb, #e5e0c1, #e8e3c7, #eae7ce, #edead4, #efeedb, #f2f1e1);
 }
 
 .cart-item-image {

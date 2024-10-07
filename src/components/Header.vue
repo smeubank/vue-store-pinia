@@ -34,7 +34,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background-color: rgba(255, 255, 255, 0.8); /* Slight transparency */
+  background: linear-gradient(135deg, #e0d8b4, #e2dcbb, #e5e0c1, #e8e3c7, #eae7ce, #edead4, #efeedb, #f2f1e1);
   z-index: 10;
 }
 
