@@ -36,6 +36,7 @@ function closeModal() {
 }
 
 .hero {
+  margin-top: 5rem; /* Add top margin to create space below the header */
   background-image: url('/hero-image.jpg'); /* Update with actual path */
   background-size: cover;
   background-position: center;

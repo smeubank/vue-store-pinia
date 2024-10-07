@@ -1,6 +1,5 @@
 <template>
   <div class="products-page">
-    <h2>Our Products</h2>
     <div class="product-grid">
       <ProductCard
         v-for="product in products"
@@ -31,6 +30,7 @@ const products = ref([
 <style scoped>
 .products-page {
   padding: 1rem;
+  padding-top: 5rem; /* Add top padding to move cards lower */
 }
 
 .product-grid {
