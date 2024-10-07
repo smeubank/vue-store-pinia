@@ -6,6 +6,7 @@ import App from './App.vue'
 import LandingPage from './pages/LandingPage.vue'
 import ProductsPage from './pages/ProductsPage.vue'
 import CheckoutPage from './pages/CheckoutPage.vue'
+import './global.css' // Import the global CSS file
 
 const routes = [
   { path: '/', component: LandingPage },
@@ -24,7 +25,7 @@ const app = createApp(App)
 
 Sentry.init({
   app,
-  dsn: "https://4a85c87c7894458aff8578d0f2d2dd89@o673219.ingest.us.sentry.io/4508059881242624",
+  dsn: import.meta.env.PUBLIC_SENTRY_DSN,
   integrations: [
     Sentry.browserTracingIntegration({ router }),
     Sentry.replayIntegration(),
