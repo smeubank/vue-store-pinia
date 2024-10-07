@@ -1,39 +1,52 @@
 <template>
   <div class="checkout-page">
-    <h2>Checkout</h2>
-    <div v-if="cartItems.length === 0">
-      Your cart is empty.
+    <div v-if="cartItems.length === 0" class="empty-cart-card">
+      <p>Your cart is empty. Go back and buy some pineapple stuff!</p>
     </div>
-    <div v-else>
-      <div v-for="item in cartItems" :key="item.id" class="cart-item">
-        <img :src="item.image" :alt="item.name" class="cart-item-image" />
-        <div class="cart-item-details">
-          <h3>{{ item.name }}</h3>
-          <p>Total: ${{ (item.price.replace('$', '') * item.quantity).toFixed(2) }}</p>
+    <div v-else class="cart-content">
+      <div class="cart-items">
+        <div v-for="item in cartItems" :key="item.id" class="cart-item">
+          <img :src="item.image" :alt="item.name" class="cart-item-image" />
+          <div class="cart-item-details">
+            <h3>{{ item.name }}</h3>
+            <p>{{ item.quantity }} x {{ item.price }} = ${{ (item.price.replace('$', '') * item.quantity).toFixed(2) }}</p>
+          </div>
+          <div class="cart-item-controls">
+            <button @click="increaseQuantity(item.id)">▲</button>
+            <button @click="decreaseQuantity(item.id)">▼</button>
+          </div>
         </div>
-        <div class="cart-item-controls">
-          <button @click="increaseQuantity(item.id)">▲</button>
-          <button @click="decreaseQuantity(item.id)">▼</button>
+      </div>
+      <div class="cart-summary">
+        <h3>Summary</h3>
+        <div v-for="item in cartItems" :key="item.id" class="summary-item">
+          <p>{{ item.quantity }} x {{ item.name }}: ${{ (item.price.replace('$', '') * item.quantity).toFixed(2) }}</p>
         </div>
+        <p class="total">Total: ${{ totalCartValue }}</p>
+        <button class="checkout-button">Checkout</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { useCartStore } from '../store/cart'
 import { storeToRefs } from 'pinia'
 
 const cartStore = useCartStore()
 const { items: cartItems } = storeToRefs(cartStore)
 
+const totalCartValue = computed(() => {
+  return cartItems.value.reduce((total, item) => {
+    return total + item.price.replace('$', '') * item.quantity
+  }, 0).toFixed(2)
+})
+
 function increaseQuantity(itemId) {
   const item = cartStore.items.find(i => i.id === itemId)
   if (item) {
     cartStore.addItem(item)
-  } else {
-    // Introduce an error by trying to access a property of undefined
-    console.log(item.undefinedProperty)
   }
 }
 
@@ -43,15 +56,39 @@ function decreaseQuantity(itemId) {
     item.quantity -= 1
   } else {
     cartStore.removeItem(itemId)
-    // Introduce an error by trying to access a property of undefined
-    console.log(item.undefinedProperty)
   }
 }
 </script>
 
 <style scoped>
 .checkout-page {
+  display: flex;
+  justify-content: space-between;
   padding: 1rem;
+  padding-top: 5rem; /* Add top padding to create space from the header */
+}
+
+.empty-cart-card {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ddd;
+  padding: 2rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.cart-content {
+  display: flex;
+  width: 100%;
+}
+
+.cart-items {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .cart-item {
@@ -59,19 +96,19 @@ function decreaseQuantity(itemId) {
   align-items: center;
   border: 1px solid #ddd;
   padding: 1rem;
-  margin-bottom: 1rem;
-  background: linear-gradient(135deg, #e0d8b4, #e2dcbb, #e5e0c1, #e8e3c7, #eae7ce, #edead4, #efeedb, #f2f1e1);
+  background: #fff;
+  border-radius: 8px;
 }
 
 .cart-item-image {
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
   margin-right: 1rem;
 }
 
 .cart-item-details {
-  flex-grow: 1;
+  flex: 1;
 }
 
 .cart-item-controls {
@@ -80,11 +117,30 @@ function decreaseQuantity(itemId) {
   gap: 0.5rem;
 }
 
-.cart-item-controls button {
+.cart-summary {
+  flex: 1;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin-left: 1rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.summary-item {
+  margin-bottom: 0.5rem;
+}
+
+.total {
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.checkout-button {
   background-color: #ffcc00;
   border: none;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
-  font-size: 1rem;
+  width: 100%;
+  margin-top: 1rem;
 }
 </style>
