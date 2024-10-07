@@ -1,18 +1,17 @@
 <template>
   <div class="landing-page">
-    <div class="grid-container">
+    <div class="flex-container">
       <div class="card card-1">
         <img src="/pineapple-paradise-logo.png" alt="Pineapple Paradise Logo" class="logo" />
         <h2>Welcome to Paradise</h2>
       </div>
-      <router-link to="/products" class="card card-2">
-        <h3>View our products</h3>
-      </router-link>
-      <div class="card card-3" @click="throwError">
-        <h3>Throw Error</h3>
-      </div>
-      <div class="card card-4" @click="simulateError">
-        <h3>Simulate Error</h3>
+      <div class="row">
+        <router-link to="/products" class="card card-2">
+          <h3>View our products <span class="icon">🔗</span></h3>
+        </router-link>
+        <div class="card card-3" @click="throwError">
+          <h3>Throw Error</h3>
+        </div>
       </div>
     </div>
   </div>
@@ -46,17 +45,20 @@ function closeModal() {
   box-sizing: border-box;
 }
 
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  gap: 1rem; /* Ensure equal padding between cards */
-  justify-content: center; /* Center the grid horizontally */
-  align-items: center; /* Center the grid vertically */
-  height: 100vh; /* Make sure the grid fits within the viewport */
-  width: 100vw; /* Ensure the grid takes the full width of the viewport */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
-  padding: 1rem; /* Add padding around the grid */
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: 600px; /* Match the width of card 1 */
+}
+
+.row {
+  display: flex;
+  justify-content: space-between; /* Align cards to the edges */
+  gap: 1rem;
+  width: 100%;
 }
 
 .card {
@@ -68,30 +70,29 @@ function closeModal() {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
   cursor: pointer;
-  padding: 1rem; /* Ensure equal padding inside each card */
-}
-
-.card:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add a larger shadow on hover */
-  transition: box-shadow 0.3s ease; /* Smooth transition for the shadow */
+  padding: 1rem;
+  transition: box-shadow 0.3s ease, background 0.3s ease;
 }
 
 .card-1 {
-  grid-area: 1 / 1 / 3 / 4; /* Corresponds to .div1 */
-  margin-top: 3rem; /* Add padding above the first card */
   background: linear-gradient(135deg, #e0d8b4, #e0d8b4, #e0d8b4, #e0d8b4, #e0d8b4, #e0d8b4, #e0d8b4, #e0d8b4);
-  transition: background 0.3s ease; /* Smooth transition for hover effect */
-  height: 350px; /* Set a fixed height to maintain the card size */
+  transition: background 0.3s ease;
+  width: 100%; /* Full width of the container */
+  max-width: 600px; /* Adjust as needed */
+  height: 300px; /* Adjust as needed */
 }
 
 .card-1:hover {
-  background: linear-gradient(135deg, #e0d8b4, #e2d9bc, #e4dbc3, #e7deca, #e9e1d1, #ece4d8, #efe8df, #f2ece6);
+  background: linear-gradient(135deg, #e0d8b4, #d7c6a1, #cfb48f, #c7a180, #be8f72, #b57c67, #ac6a5e, #a15857);
 }
 
 .card-2 {
-  grid-area: 3 / 1 / 5 / 3; /* Corresponds to .div2 */
-  background-color: #58ec0d; /* Set the initial color */
-  transition: background 0.3s ease; /* Smooth transition for hover effect */
+  background-color: #be9d61; /* Default color for card 2 */
+  transition: background 0.3s ease;
+  flex: 1; /* Make both cards equal size */
+  height: 150px; /* Adjust as needed */
+  text-decoration: none; /* Remove hyperlink appearance */
+  color: inherit; /* Inherit text color from parent */
 }
 
 .card-2:hover {
@@ -99,18 +100,25 @@ function closeModal() {
 }
 
 .card-3 {
-  grid-area: 3 / 3 / 4 / 4; /* Corresponds to .div3 */
+  background-color: #5d7f7a; /* Standard color for card 3 */
+  transition: background 0.3s ease;
+  flex: 1; /* Make both cards equal size */
+  height: 150px; /* Adjust as needed */
 }
 
-.card-4 {
-  grid-area: 4 / 3 / 5 / 4; /* Corresponds to .div4 */
+.card-3:hover {
+  background: linear-gradient(135deg, #492471, #5e256e, #6f276a, #7e2b66, #8a3261, #943a5d, #9c4459, #a24f56);
+}
+
+.icon {
+  margin-left: 0.5rem; /* Add some space between text and icon */
 }
 
 .logo {
-  max-width: 10%; /* Adjust the size as needed */
+  max-width: 10%;
   height: auto;
-  border-radius: 50%; /* Make the image oval */
-  object-fit: cover; /* Ensure the image covers the area */
-  aspect-ratio: 1 / 1; /* Maintain a square aspect ratio for the oval effect */
+  border-radius: 50%;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
 }
 </style>
