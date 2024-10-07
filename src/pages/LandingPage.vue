@@ -1,14 +1,18 @@
 <template>
   <div class="landing-page">
-    <div class="hero">
-      <h1>Welcome to Pineapple Paradise</h1>
-      <p>Explore our amazing pineapple products!</p>
-      <router-link to="/products" class="hero-button">View Products</router-link>
-    </div>
-    <button @click="throwError" class="error-button">Simulate Error</button>
-    <div v-if="showErrorModal" class="error-modal">
-      <p>Oh no, there is an error! Would be nice if you had Sentry.</p>
-      <button @click="closeModal">Close</button>
+    <div class="flex-container">
+      <div class="card card-1">
+        <img src="/pineapple-paradise-logo.png" alt="Pineapple Paradise Logo" class="logo" />
+        <h2>Welcome to Paradise</h2>
+      </div>
+      <div class="row">
+        <router-link to="/products" class="card card-2">
+          <h3>View our products <span class="icon">🔗</span></h3>
+        </router-link>
+        <div class="card card-3" @click="throwError">
+          <h3>Throw Error</h3>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -19,8 +23,11 @@ import { ref } from 'vue'
 const showErrorModal = ref(false)
 
 function throwError() {
-  // Throw an unhandled error
   throw new Error('Simulated unhandled error for Sentry demonstration')
+}
+
+function simulateError() {
+  showErrorModal.value = true
 }
 
 function closeModal() {
@@ -30,69 +37,88 @@ function closeModal() {
 
 <style scoped>
 .landing-page {
-  position: relative;
-  text-align: center;
-  color: white;
-}
-
-.hero {
-  margin-top: 5rem; /* Add top margin to create space below the header */
-  background-image: url('/hero-image.jpg'); /* Update with actual path */
-  background-size: cover;
-  background-position: center;
-  width: 100%;
-  height: 60vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
-  z-index: 1;
+  height: 100vh;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
   width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.2); /* Adjusted tint opacity */
-  z-index: -1;
+  max-width: 600px; /* Match the width of card 1 */
 }
 
-.hero-button {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background-color: #ffcc00;
-  color: #333;
-  text-decoration: none;
-  border-radius: 5px;
-  z-index: 2;
+.row {
+  display: flex;
+  justify-content: space-between; /* Align cards to the edges */
+  gap: 1rem;
+  width: 100%;
 }
 
-.error-button {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background-color: #ff0000;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
   cursor: pointer;
+  padding: 1rem;
+  transition: box-shadow 0.3s ease, background 0.3s ease;
 }
 
-.error-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-image: url('/error-modal.png'); /* Update with actual path */
-  background-size: cover;
-  background-position: center;
-  padding: 2rem;
-  border: 1px solid #ddd;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  color: white; /* Ensure text is readable on the background */
+.card-1 {
+  background: linear-gradient(135deg, #e0d8b4, #e0d8b4, #e0d8b4, #e0d8b4, #e0d8b4, #e0d8b4, #e0d8b4, #e0d8b4);
+  transition: background 0.3s ease;
+  width: 100%; /* Full width of the container */
+  max-width: 600px; /* Adjust as needed */
+  height: 300px; /* Adjust as needed */
+}
+
+.card-1:hover {
+  background: linear-gradient(135deg, #e0d8b4, #d7c6a1, #cfb48f, #c7a180, #be8f72, #b57c67, #ac6a5e, #a15857);
+}
+
+.card-2 {
+  background-color: #be9d61; /* Default color for card 2 */
+  transition: background 0.3s ease;
+  flex: 1; /* Make both cards equal size */
+  height: 150px; /* Adjust as needed */
+  text-decoration: none; /* Remove hyperlink appearance */
+  color: inherit; /* Inherit text color from parent */
+}
+
+.card-2:hover {
+  background: linear-gradient(135deg, #58ec0d, #87e800, #a5e427, #bae049, #cadd68, #d5da84, #ddd99d, #e0d8b4);
+}
+
+.card-3 {
+  background-color: #5d7f7a; /* Standard color for card 3 */
+  transition: background 0.3s ease;
+  flex: 1; /* Make both cards equal size */
+  height: 150px; /* Adjust as needed */
+}
+
+.card-3:hover {
+  background: linear-gradient(135deg, #492471, #5e256e, #6f276a, #7e2b66, #8a3261, #943a5d, #9c4459, #a24f56);
+}
+
+.icon {
+  margin-left: 0.5rem; /* Add some space between text and icon */
+}
+
+.logo {
+  max-width: 10%;
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
 }
 </style>

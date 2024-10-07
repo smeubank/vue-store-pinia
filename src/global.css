@@ -1,4 +1,6 @@
 body {
-  background-image: url("/public/background-image.png");
+  background-image: url("/background-image.png");
   background-repeat: repeat;
+  background-size: cover;
+  background-repeat: no-repeat;
 }

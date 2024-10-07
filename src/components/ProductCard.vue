@@ -27,7 +27,7 @@ function addToCart() {
   border: 1px solid #ddd;
   padding: 1rem;
   text-align: center;
-  background-color: #f0f0f0; /* Light grey background */
+  background: linear-gradient(135deg, #e0d8b4, #e2dcbb, #e5e0c1, #e8e3c7, #eae7ce, #edead4, #efeedb, #f2f1e1);
   background-size: cover;
   background-position: center;
   height: 350px; /* Adjusted height to accommodate image and text */

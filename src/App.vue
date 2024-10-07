@@ -2,7 +2,6 @@
   <div id="app">
     <Header />
     <router-view></router-view>
-    <button @click="throwError">Throw error</button>
     <div v-if="showErrorModal" class="error-modal">
       <p>Oh no, there is an error! Would be nice if you had Sentry.</p>
       <button @click="closeModal">Close</button>
