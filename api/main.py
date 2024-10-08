@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 sentry_sdk.init(
     dsn="https://b8233ed9639fc2fa0e0e5b1727ea893a@o673219.ingest.us.sentry.io/4508087188455424",
     # Set traces_sample_rate to 1.0 to capture 100% of transactions for tracing.
-    debug=True,
+    # debug=True,
     traces_sample_rate=1.0,
     # Set profiles_sample_rate to 1.0 to profile 100% of sampled transactions.
     # We recommend adjusting this value in production.
@@ -20,13 +20,13 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
-# Allow all origins for simplicity, but you should restrict this in production
+# Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Adjust this to your needs
+    allow_origins=["*"],  # Adjust this to your specific frontend domain
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["sentry-trace", "baggage", "*"],  # Include sentry-trace and baggage
 )
 
 products = [
