@@ -26,11 +26,14 @@ const app = createApp(App)
 Sentry.init({
   app,
   dsn: import.meta.env.PUBLIC_SENTRY_DSN || 'https://4a85c87c7894458aff8578d0f2d2dd89@o673219.ingest.us.sentry.io/4508059881242624',
-  // debug: true,
   integrations: [
+    new Sentry.Integrations.HttpClient({
+      failedRequestStatusCodes: [[400, 600]], // Capture all status codes between 400 and 600
+    }),
     Sentry.browserTracingIntegration({ router }),
     Sentry.replayIntegration(),
   ],
+  sendDefaultPii: true, // Enable sending of headers and cookies
   tracesSampleRate: 1.0,
   tracePropagationTargets: ['localhost', /\/.*/],
   replaysSessionSampleRate: 0.1,
