@@ -4,6 +4,12 @@
       <div class="card card-1">
         <img src="/pineapple-paradise-logo.png" alt="Pineapple Paradise Logo" class="logo" />
         <h2>Welcome to Paradise</h2>
+        <p>This website is a demo of a few things:</p>
+        <ul>
+          <li>My poor taste in UI design - gradients everywhere</li>
+          <li>How to use <a href="https://pinia.vuejs.org/" target="_blank">Pinia</a> for managing state in a Vue.js store</li>
+          <li>How you can use <a href="https://docs.sentry.io/platforms/javascript/guides/vue/" target="_blank">Sentry's Vue SDK</a> and Pinia integrations for error monitoring and tracing to get performance insights.</li>
+        </ul>
       </div>
       <div class="row">
         <router-link to="/products" class="card card-2">
@@ -36,6 +42,8 @@ function closeModal() {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Papyrus&display=swap');
+
 .landing-page {
   display: flex;
   justify-content: center;
@@ -43,6 +51,7 @@ function closeModal() {
   height: 100vh;
   padding: 1rem;
   box-sizing: border-box;
+  font-family: 'Papyrus', sans-serif; /* Apply Papyrus font */
 }
 
 .flex-container {
@@ -63,6 +72,7 @@ function closeModal() {
 
 .card {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #f0f0f0;
@@ -79,7 +89,8 @@ function closeModal() {
   transition: background 0.3s ease;
   width: 100%; /* Full width of the container */
   max-width: 600px; /* Adjust as needed */
-  height: 300px; /* Adjust as needed */
+  height: auto; /* Adjust height to fit content */
+  padding: 2rem; /* Add padding for better spacing */
 }
 
 .card-1:hover {
@@ -108,6 +119,11 @@ function closeModal() {
 
 .card-3:hover {
   background: linear-gradient(135deg, #492471, #5e256e, #6f276a, #7e2b66, #8a3261, #943a5d, #9c4459, #a24f56);
+}
+
+ul {
+  list-style-position: inside; /* Align bullet points and text */
+  padding-left: 0; /* Remove default padding */
 }
 
 .icon {
