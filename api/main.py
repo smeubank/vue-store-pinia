@@ -1,6 +1,7 @@
 import logging
 from fastapi import FastAPI
 import sentry_sdk
+from fastapi.middleware.cors import CORSMiddleware
 
 # Initialize Sentry
 sentry_sdk.init(
@@ -18,6 +19,15 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = FastAPI()
+
+# Allow all origins for simplicity, but you should restrict this in production
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust this to your needs
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 products = [
     {"id": 1, "name": "Whole Pineapple", "price": 19.99},
