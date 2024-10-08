@@ -11,20 +11,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import ProductCard from '../components/ProductCard.vue'
 
-// Sample product data with image paths
-const products = ref([
-  { id: 1, name: 'Whole Pineapple', price: '$19.99', image: '/pineapple.jpg' },
-  { id: 2, name: 'Canned Pineapple', price: '$29.99', image: '/canned-pineapple.jpg' },
-  { id: 3, name: 'Pineapple Juice', price: '$39.99', image: '/pineapple-juice.jpg' },
-  { id: 4, name: 'Pineapple Sauce', price: '$49.99', image: '/pineapple-sauce.jpg' },
-  { id: 5, name: 'Sliced Pineapple', price: '$59.99', image: '/sliced-pineapple.jpg' },
-  { id: 6, name: 'Pineapple Bar Soap', price: '$69.99', image: '/pineapple-bar-soap.jpg' },
-  { id: 7, name: 'Pineapple State Flag', price: '$79.99', image: '/pineapple-state-flag.jpg' },
-  { id: 8, name: 'Pineapple Hat', price: '$89.99', image: '/pineapple-hat.jpg' }
-])
+const products = ref([])
+
+onMounted(async () => {
+  const response = await fetch('http://localhost:8000/products')
+  products.value = await response.json()
+})
 </script>
 
 <style scoped>
