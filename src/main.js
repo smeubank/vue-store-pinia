@@ -26,7 +26,7 @@ const app = createApp(App)
 Sentry.init({
   app,
   dsn: import.meta.env.PUBLIC_SENTRY_DSN || 'https://4a85c87c7894458aff8578d0f2d2dd89@o673219.ingest.us.sentry.io/4508059881242624',
-  debug: true,
+  // debug: true,
   integrations: [
     Sentry.browserTracingIntegration({ router }),
     Sentry.replayIntegration(),

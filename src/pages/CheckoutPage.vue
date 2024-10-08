@@ -9,7 +9,7 @@
           <img :src="item.image" :alt="item.name" class="cart-item-image" />
           <div class="cart-item-details">
             <h3>{{ item.name }}</h3>
-            <p>{{ item.quantity }} x {{ item.price }} = ${{ (item.price.replace('$', '') * item.quantity).toFixed(2) }}</p>
+            <p>{{ item.quantity }} x {{ item.price }} = ${{ (parseFloat(item.price.replace('$', '')) * item.quantity).toFixed(2) }}</p>
           </div>
           <div class="cart-item-controls">
             <button @click="increaseQuantity(item.id)">▲</button>
@@ -20,7 +20,7 @@
       <div class="cart-summary">
         <h3>Summary</h3>
         <div v-for="item in cartItems" :key="item.id" class="summary-item">
-          <p>{{ item.quantity }} x {{ item.name }}: ${{ (item.price.replace('$', '') * item.quantity).toFixed(2) }}</p>
+          <p>{{ item.quantity }} x {{ item.name }}: ${{ (parseFloat(item.price.replace('$', '')) * item.quantity).toFixed(2) }}</p>
         </div>
         <p class="total">Total: ${{ totalCartValue }}</p>
         <button class="checkout-button">Checkout</button>
@@ -30,16 +30,42 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useCartStore } from '../store/cart'
 import { storeToRefs } from 'pinia'
 
 const cartStore = useCartStore()
 const { items: cartItems } = storeToRefs(cartStore)
 
+onMounted(async () => {
+  try {
+    const productsResponse = await fetch('http://localhost:8000/products')
+    const products = await productsResponse.json()
+
+    const enrichedCartItems = cartItems.value.map(cartItem => {
+      const product = products.find(p => p.id === cartItem.id)
+      if (!product) {
+        console.warn(`Product with ID ${cartItem.id} not found`)
+        return cartItem // Return the cart item as is if no product is found
+      }
+      return {
+        ...cartItem,
+        name: product.name,
+        price: String(product.price),
+        image: product.image
+      }
+    })
+
+    cartStore.setItems(enrichedCartItems)
+    console.log('Cart items enriched with product data:', enrichedCartItems)
+  } catch (error) {
+    console.error('Failed to fetch product data:', error)
+  }
+})
+
 const totalCartValue = computed(() => {
   return cartItems.value.reduce((total, item) => {
-    return total + item.price.replace('$', '') * item.quantity
+    return total + parseFloat(item.price.replace('$', '')) * item.quantity
   }, 0).toFixed(2)
 })
 

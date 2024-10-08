@@ -2,6 +2,7 @@ import logging
 from fastapi import FastAPI
 import sentry_sdk
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 # Initialize Sentry
 sentry_sdk.init(
@@ -20,6 +21,9 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
+# Mount the static directory
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
@@ -30,14 +34,14 @@ app.add_middleware(
 )
 
 products = [
-    {"id": 1, "name": "Whole Pineapple", "price": 19.99},
-    {"id": 2, "name": "Canned Pineapple", "price": 29.99},
-    {"id": 3, "name": "Pineapple Juice", "price": 39.99},
-    {"id": 4, "name": "Pineapple Sauce", "price": 49.99},
-    {"id": 5, "name": "Sliced Pineapple", "price": 59.99},
-    {"id": 6, "name": "Pineapple Bar Soap", "price": 69.99},
-    {"id": 7, "name": "Pineapple State Flag", "price": 79.99},
-    {"id": 8, "name": "Pineapple Hat", "price": 89.99},
+    {"id": 1, "name": "Whole Pineapple", "price": 19.99, "image": "pineapple.jpg"},
+    {"id": 2, "name": "Canned Pineapple", "price": 29.99, "image": "canned-pineapple.jpg"},
+    {"id": 3, "name": "Pineapple Juice", "price": 39.99, "image": "pineapple-juice.jpg"},
+    {"id": 4, "name": "Pineapple Sauce", "price": 49.99, "image": "pineapple-sauce.jpg"},
+    {"id": 5, "name": "Sliced Pineapple", "price": 59.99, "image": "sliced-pineapple.jpg"},
+    {"id": 6, "name": "Pineapple Bar Soap", "price": 69.99, "image": "pineapple-bar-soap.jpg"},
+    {"id": 7, "name": "Pineapple State Flag", "price": 79.99, "image": "pineapple-state-flag.jpg"},
+    {"id": 8, "name": "Pineapple Hat", "price": 89.99, "image": "pineapple-hat.jpg"},
 ]
 
 @app.get("/products")

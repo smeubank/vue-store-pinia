@@ -18,7 +18,11 @@ const products = ref([])
 
 onMounted(async () => {
   const response = await fetch('http://localhost:8000/products')
-  products.value = await response.json()
+  const data = await response.json()
+  products.value = data.map(product => ({
+    ...product,
+    image: `http://localhost:8000/static/images/products/${product.image}`
+  }))
 })
 </script>
 
