@@ -27,7 +27,7 @@ Sentry.init({
   app,
   dsn: import.meta.env.PUBLIC_SENTRY_DSN || 'https://4a85c87c7894458aff8578d0f2d2dd89@o673219.ingest.us.sentry.io/4508059881242624',
   integrations: [
-    new Sentry.Integrations.HttpClient({
+    Sentry.httpClientIntegration({
       failedRequestStatusCodes: [[400, 600]], // Capture all status codes between 400 and 600
     }),
     Sentry.browserTracingIntegration({ router }),
