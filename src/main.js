@@ -23,6 +23,12 @@ const pinia = createPinia()
 
 const app = createApp(App)
 
+// Determine the tunnel URL based on the environment
+const isProduction = import.meta.env.PROD
+const tunnelUrl = isProduction
+  ? 'https://vue-store-pinia.onrender.com/tunnel'
+  : 'http://localhost:8000/tunnel'
+
 Sentry.init({
   app,
   dsn: import.meta.env.PUBLIC_SENTRY_DSN || 'https://4a85c87c7894458aff8578d0f2d2dd89@o673219.ingest.us.sentry.io/4508059881242624',
@@ -33,7 +39,7 @@ Sentry.init({
     Sentry.browserTracingIntegration({ router }),
     Sentry.replayIntegration(),
   ],
-  tunnel: "http://localhost:8000/tunnel" || "/tunnel",
+  tunnel: tunnelUrl, // Use the determined tunnel URL
   sendDefaultPii: true, // Enable sending of headers and cookies
   tracesSampleRate: 1.0,
   tracePropagationTargets: ['localhost', /\/.*/],
