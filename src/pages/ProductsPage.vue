@@ -17,12 +17,13 @@ import ProductCard from '../components/ProductCard.vue'
 const products = ref([])
 
 onMounted(async () => {
-  const response = await fetch('http://localhost:8000/products')
-  const data = await response.json()
+  const baseUrl = 'https://vue-store-pinia.onrender.com' || 'http://localhost:8000';
+  const response = await fetch(`${baseUrl}/products`);
+  const data = await response.json();
   products.value = data.map(product => ({
     ...product,
-    image: `http://localhost:8000/static/images/products/${product.image}`
-  }))
+    image: `${baseUrl}/static/images/products/${product.image}`
+  }));
 })
 </script>
 
