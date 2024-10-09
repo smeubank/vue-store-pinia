@@ -1,7 +1,8 @@
 <template>
   <div class="checkout-page">
-    <div v-if="cartItems.length === 0" class="empty-cart-card">
-      <p>Your cart is empty. Go back and buy some pineapple stuff!</p>
+    <div v-if="errorMessage" class="error-card">
+      <img src="/pineapple-paradise-logo.png" alt="Pineapple Logo" class="logo" />
+      <p>{{ errorMessage }}</p>
     </div>
     <div v-else class="cart-content">
       <div class="cart-items">
@@ -30,36 +31,41 @@
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, ref } from 'vue'
 import { useCartStore } from '../store/cart'
 import { storeToRefs } from 'pinia'
 
 const cartStore = useCartStore()
 const { items: cartItems } = storeToRefs(cartStore)
+const errorMessage = ref('')
 
 onMounted(async () => {
   try {
-    const productsResponse = await fetch('http://localhost:8000/products')
-    const products = await productsResponse.json()
+    const baseUrl = 'https://vue-store-pinia.onrender.com' || 'http://localhost:8000';
+    const productsResponse = await fetch(`${baseUrl}/products`);
+    if (!productsResponse.ok) {
+      throw new Error('Failed to fetch products');
+    }
+    const products = await productsResponse.json();
 
     const enrichedCartItems = cartItems.value.map(cartItem => {
-      const product = products.find(p => p.id === cartItem.id)
+      const product = products.find(p => p.id === cartItem.id);
       if (!product) {
-        console.warn(`Product with ID ${cartItem.id} not found`)
-        return cartItem // Return the cart item as is if no product is found
+        console.warn(`Product with ID ${cartItem.id} not found`);
+        return cartItem;
       }
       return {
         ...cartItem,
         name: product.name,
         price: String(product.price),
         image: product.image
-      }
-    })
+      };
+    });
 
-    cartStore.setItems(enrichedCartItems)
-    console.log('Cart items enriched with product data:', enrichedCartItems)
+    cartStore.setItems(enrichedCartItems);
+    console.log('Cart items enriched with product data:', enrichedCartItems);
   } catch (error) {
-    console.error('Failed to fetch product data:', error)
+    errorMessage.value = "Since this website is a joke, the backend will shutdown due to inactivity. Reload this page in 60 seconds to enjoy pineapple goodness.";
   }
 })
 
@@ -168,5 +174,19 @@ function decreaseQuantity(itemId) {
   cursor: pointer;
   width: 100%;
   margin-top: 1rem;
+}
+
+.error-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
 }
 </style>

@@ -24,7 +24,7 @@ onMounted(async () => {
     ...product,
     image: `${baseUrl}/static/images/products/${product.image}`
   }));
-})
+});
 </script>
 
 <style scoped>
