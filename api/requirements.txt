@@ -1,0 +1,4 @@
+fastapi
+uvicorn
+sentry-sdk
+aiohttp

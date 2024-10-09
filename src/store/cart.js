@@ -26,6 +26,10 @@ export const useCartStore = defineStore('cart', {
         this.items.splice(index, 1)
       }
       console.log('Current cart state:', JSON.stringify(this.items, null, 2))
+    },
+    setItems(items) {
+      this.items = items
+      console.log('Cart items set:', JSON.stringify(this.items, null, 2))
     }
   },
   getters: {
