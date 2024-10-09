@@ -1,4 +1,5 @@
 import logging
+import os
 from fastapi import FastAPI
 import sentry_sdk
 from fastapi.middleware.cors import CORSMiddleware
@@ -52,3 +53,8 @@ async def get_products():
 @app.get("/sentry-debug")
 async def trigger_error():
     division_by_zero = 1 / 0
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
