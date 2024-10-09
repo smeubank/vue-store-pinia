@@ -4,8 +4,24 @@ from fastapi import FastAPI
 import sentry_sdk
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from urllib.parse import urlparse
 
-# Initialize Sentry
+# Function to filter out certain transactions
+def filter_transactions(event, hint):
+    url_string = event.get("request", {}).get("url", "")
+    parsed_url = urlparse(url_string)
+
+    # Filter out transactions for .jpg and .ico files
+    if parsed_url.path.endswith(('.jpg', '.ico')):
+        return None
+
+    # Filter out transactions for specific paths like /healthcheck
+    if parsed_url.path == "/healthcheck":
+        return None
+
+    return event
+
+# Initialize Sentry with the filter
 sentry_sdk.init(
     dsn="https://b8233ed9639fc2fa0e0e5b1727ea893a@o673219.ingest.us.sentry.io/4508087188455424",
     # Set traces_sample_rate to 1.0 to capture 100% of transactions for tracing.
@@ -14,6 +30,7 @@ sentry_sdk.init(
     # Set profiles_sample_rate to 1.0 to profile 100% of sampled transactions.
     # We recommend adjusting this value in production.
     profiles_sample_rate=1.0,
+    before_send_transaction=filter_transactions,
 )
 
 # Configure logging
