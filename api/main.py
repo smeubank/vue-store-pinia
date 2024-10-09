@@ -45,17 +45,10 @@ app = FastAPI()
 # Mount the static directory
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# Configure CORS
+# Configure CORS with regex
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        r"^https://vue-store-pinia.*\.vercel\.app$",  # Regex pattern for Vercel domains
-        "https://vue-store-pinia.onrender.com",       # Allow requests from your Render domain
-        "http://localhost",                           # Allow requests from localhost
-        "http://localhost:8000",                      # Allow requests from localhost with port 8000
-        "http://127.0.0.1",                           # Allow requests from 127.0.0.1
-        "http://127.0.0.1:8000"                       # Allow requests from 127.0.0.1 with port 8000
-    ],
+    allow_origin_regex=r"^https://vue-store-pinia.*\.vercel\.app$|https://vue-store-pinia\.onrender\.com|http://localhost(:8000)?|http://127\.0\.0\.1(:8000)?",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["sentry-trace", "baggage", "*"],  # Include sentry-trace and baggage
