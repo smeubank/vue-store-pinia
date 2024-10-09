@@ -33,6 +33,7 @@ Sentry.init({
     Sentry.browserTracingIntegration({ router }),
     Sentry.replayIntegration(),
   ],
+  tunnel: "http://localhost:8000/tunnel" || "/tunnel",
   sendDefaultPii: true, // Enable sending of headers and cookies
   tracesSampleRate: 1.0,
   tracePropagationTargets: ['localhost', /\/.*/],
