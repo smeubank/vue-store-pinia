@@ -21,9 +21,8 @@ jobs:
 
     - name: Run backend tests
       run: |
-        cd api
         export PYTHONPATH=$(pwd)
-        pytest --cov=api tests/
+        pytest --cov=api api/tests/
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
