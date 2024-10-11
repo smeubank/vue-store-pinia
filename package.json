@@ -10,7 +10,7 @@
     "serve": "vite preview",
     "test": "jest --config src/jest.config.cjs",
     "test:frontend": "npm run test",
-    "test:backend": "pytest --cov=api api/tests/",
+    "test:backend": "pytest --cov=api api/tests/ --cov-report=xml",
     "test:stack": "npm run test:frontend && npm run test:backend"
   },
   "keywords": [],
