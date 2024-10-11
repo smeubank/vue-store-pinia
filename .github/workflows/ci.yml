@@ -26,10 +26,29 @@ jobs:
     
     - name: Backend Upload coverage to Codecov
       uses: codecov/codecov-action@v4
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }} # required
-        verbose: true # optional (default = false)
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
+    - name: BE Upload coverage to Codecov test with token
+      uses: codecov/codecov-action@v4
+      env:
+        token: ${{ secrets.CODECOV_TOKEN }}
+    
+    - name: BE Upload with CodeCov CLI based on Sentry repo
+      run: |
+        codecovcli create-commit
+        codecovcli create-report
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    
+    - name: Test some config crap i found in sentry tepo
+      if: ${{ always() }}
+      uses: codecov/codecov-action@v4
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      with:
+        flags: smart-tests
+      
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
