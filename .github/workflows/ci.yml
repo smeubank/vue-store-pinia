@@ -35,7 +35,7 @@ jobs:
       run: |
         curl -Os https://cli.codecov.io/latest/linux/codecov
         chmod +x codecov
-        ./codecov --verbose upload-process --disable-search -t ${{ secrets.CODECOV_TOKEN }} -F backend -f coverage.xml
+        ./codecov --verbose upload-process --disable-search -t ${{ secrets.CODECOV_TOKEN }} -f coverage.xml
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
