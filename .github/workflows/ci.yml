@@ -31,11 +31,10 @@ jobs:
         files: ./coverage.xml
         flags: backend
         
-    - name: Upload backend coverage to Codecov via CLI
+    - name: Upload backend coverage to Codecov via PIP CLI
       run: |
-        curl -Os https://cli.codecov.io/latest/linux/codecov
-        chmod +x codecov
-        ./codecov --verbose upload-process --disable-search -t ${{ secrets.CODECOV_TOKEN }} -f coverage.xml
+        pip install codecov-cli
+        codecovcli --verbose upload-process --disable-search -n 'backend-job'-${{ github.run_id }} -F backend -f coverage.xml -t ${{ secrets.CODECOV_TOKEN }} 
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
