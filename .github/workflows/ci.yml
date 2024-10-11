@@ -26,8 +26,9 @@ jobs:
     
     - name: Backend Upload coverage to Codecov
       uses: codecov/codecov-action@v4
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }} # required
+        verbose: true # optional (default = false)
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
