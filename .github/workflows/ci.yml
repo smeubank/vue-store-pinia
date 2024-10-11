@@ -24,6 +24,16 @@ jobs:
         export PYTHONPATH=$(pwd)
         pytest --cov=api api/tests/ --cov-report=xml
     
+    - name: test from GH search
+      uses: codecov/codecov-action@v4
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+    
+    - name: test public claim
+      uses: codecov/codecov-action@v4
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+
     - name: Backend Upload coverage to Codecov
       uses: codecov/codecov-action@v4
       env:
