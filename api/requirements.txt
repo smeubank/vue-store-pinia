@@ -2,3 +2,6 @@ fastapi
 uvicorn
 sentry-sdk
 aiohttp
+httpx
+pytest
+pytest-cov
