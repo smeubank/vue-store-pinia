@@ -23,42 +23,20 @@ jobs:
       run: |
         export PYTHONPATH=$(pwd)
         pytest --cov=api api/tests/ --cov-report=xml
-    
-    - name: test from GH search
+
+    - name: Upload backend coverage to Codecov
       uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-    
-    - name: test public claim
-      uses: codecov/codecov-action@v4
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-
-    - name: Backend Upload coverage to Codecov
-      uses: codecov/codecov-action@v4
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-    - name: BE Upload coverage to Codecov test with token
-      uses: codecov/codecov-action@v4
-      env:
-        token: ${{ secrets.CODECOV_TOKEN }}
-    
-    - name: BE Upload with CodeCov CLI based on Sentry repo
+        files: ./coverage.xml
+        flags: backend
+        
+    - name: Upload backend coverage to Codecov via CLI
       run: |
-        codecovcli create-commit
-        codecovcli create-report
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-    
-    - name: Test some config crap i found in sentry tepo
-      if: ${{ always() }}
-      uses: codecov/codecov-action@v4
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      with:
-        flags: smart-tests
-      
+        curl -Os https://cli.codecov.io/latest/linux/codecov
+        chmod +x codecov
+        ./codecov --verbose upload-process --disable-search -t ${{ secrets.CODECOV_TOKEN }} -n 'backend-job'-${{ github.run_id }} -F backend -f coverage.xml
+
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
@@ -70,7 +48,8 @@ jobs:
     - name: Run frontend tests
       run: npm run test
 
-    - name: Frontend Upload coverage to Codecov
-      uses: codecov/codecov-action@v2
+    - name: Upload frontend coverage to Codecov
+      uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
+        flags: frontend
