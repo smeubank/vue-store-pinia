@@ -25,10 +25,9 @@ jobs:
         pytest --cov=api api/tests/ --cov-report=xml
     
     - name: Backend Upload coverage to Codecov
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
