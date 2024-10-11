@@ -23,6 +23,12 @@ jobs:
       run: |
         export PYTHONPATH=$(pwd)
         pytest --cov=api api/tests/ --cov-report=xml
+    
+    - name: Backend Upload coverage to Codecov
+      uses: codecov/codecov-action@v2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
@@ -35,7 +41,7 @@ jobs:
     - name: Run frontend tests
       run: npm run test
 
-    - name: Upload coverage to Codecov
+    - name: Frontend Upload coverage to Codecov
       uses: codecov/codecov-action@v2
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
