@@ -48,7 +48,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # Configure CORS with regex
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=r"^https://vue-store-pinia.*\.vercel\.app$|https://vue-store-pinia\.onrender\.com|http://localhost(:8000)?|http://127\.0\.0\.1(:8000)?",
+    allow_origin_regex=r"^https://vue-store-pinia.*\.vercel\.app$|https://vue-store-pinia\.onrender\.com|http://localhost(:8000|:5173)?|http://127\.0\.0\.1(:8000)?",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["sentry-trace", "baggage", "*"],  # Include sentry-trace and baggage
