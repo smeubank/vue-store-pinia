@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createRouter, createWebHistory } from 'vue-router'
 import * as Sentry from '@sentry/vue'
+import { createSentryPiniaPlugin } from "@sentry/vue";
 import App from './App.vue'
 import LandingPage from './pages/LandingPage.vue'
 import ProductsPage from './pages/ProductsPage.vue'
@@ -39,7 +40,7 @@ Sentry.init({
     Sentry.browserTracingIntegration({ router }),
     Sentry.replayIntegration(),
   ],
-  tunnel: tunnelUrl, // Use the determined tunnel URL
+  // tunnel: tunnelUrl, // Use the determined tunnel URL
   sendDefaultPii: true, // Enable sending of headers and cookies
   tracesSampleRate: 1.0,
   tracePropagationTargets: ['localhost', /\/.*/],
@@ -47,6 +48,7 @@ Sentry.init({
   replaysOnErrorSampleRate: 1.0,
 })
 
+pinia.use(createSentryPiniaPlugin());
 app.use(pinia)
 app.use(router)
 app.mount('#app')
