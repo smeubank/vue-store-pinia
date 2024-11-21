@@ -1,6 +1,43 @@
 body {
-  background-image: url("/background-image.png");
-  background-repeat: repeat;
-  background-size: cover;
-  background-repeat: no-repeat;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(88, 236, 13, 0.2) 0%, /* Light green center */
+    rgba(135, 232, 0, 0.15) 30%, /* Fading green */
+    rgba(245, 245, 245, 0.95) 100% /* Light grey edge */
+  );
+  background-attachment: fixed;
+  position: relative;
 }
+
+/* Add a subtle animated fog overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    transparent,
+    rgba(135, 232, 0, 0.05) 40%,
+    rgba(88, 236, 13, 0.1) 60%
+  );
+  pointer-events: none;
+  animation: fogAnimation 15s infinite alternate;
+}
+
+@keyframes fogAnimation {
+  0% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+å

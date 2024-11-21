@@ -31,12 +31,22 @@ onMounted(async () => {
 <style scoped>
 .products-page {
   padding: 1rem;
-  padding-top: 5rem; /* Add top padding to move cards lower */
+  padding-top: 5rem;
+  position: relative;
+  z-index: 1;
+  background: radial-gradient(
+    circle at center,
+    rgba(88, 236, 13, 0.1) 0%,
+    transparent 70%
+  );
+  min-height: calc(100vh - 6rem);
 }
 
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1rem;
+  position: relative;
+  z-index: 2;
 }
 </style>

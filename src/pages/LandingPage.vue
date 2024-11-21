@@ -48,10 +48,27 @@ function closeModal() {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   padding: 1rem;
   box-sizing: border-box;
-  font-family: 'Papyrus', sans-serif; /* Apply Papyrus font */
+  font-family: 'Papyrus', sans-serif;
+  position: relative;
+}
+
+.landing-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    transparent,
+    rgba(224, 216, 180, 0.05) 40%,
+    rgba(224, 216, 180, 0.1) 60%
+  );
+  pointer-events: none;
 }
 
 .flex-container {

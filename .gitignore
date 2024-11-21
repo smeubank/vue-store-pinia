@@ -141,3 +141,5 @@ api/__pycache__/
 .pytest_cache
 .coverage
 coverage.xml
+
+blog.mdx

@@ -24,17 +24,27 @@ function addToCart() {
 <style scoped>
 .product-card {
   position: relative;
-  border: 1px solid #ddd;
+  border: 1px solid rgba(221, 221, 221, 0.5);
   padding: 1rem;
   text-align: center;
-  background: linear-gradient(135deg, #e0d8b4, #e2dcbb, #e5e0c1, #e8e3c7, #eae7ce, #edead4, #efeedb, #f2f1e1);
-  background-size: cover;
-  background-position: center;
-  height: 350px; /* Adjusted height to accommodate image and text */
+  background: linear-gradient(135deg, 
+    rgba(224, 216, 180, 0.9),
+    rgba(226, 220, 187, 0.85),
+    rgba(229, 224, 193, 0.8)
+  );
+  backdrop-filter: blur(5px);
+  border-radius: 8px;
+  height: 350px;
   color: black;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .product-image {
