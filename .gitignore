@@ -124,3 +124,22 @@ lerna-debug.log*
 
 # Sentry Config File
 .env.sentry-build-plugin
+
+.venv
+
+# Node.js
+node_modules/
+dist/
+.vite
+
+# Python
+api/__pycache__/
+# api/tests/__pycache__/
+**/__pycache__/
+
+
+.pytest_cache
+.coverage
+coverage.xml
+
+blog.mdx

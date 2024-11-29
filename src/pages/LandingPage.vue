@@ -1,7 +1,7 @@
 <template>
   <div class="landing-page">
     <div class="flex-container">
-      <div class="card card-1">
+      <a href="https://docs.sentry.io/platforms/javascript/guides/vue/" target="_blank" class="card card-1">
         <img src="/pineapple-paradise-logo.png" alt="Pineapple Paradise Logo" class="logo" />
         <h2>Welcome to Paradise</h2>
         <p>This website is a demo of a few things:</p>
@@ -10,7 +10,7 @@
           <li>How to use <a href="https://pinia.vuejs.org/" target="_blank">Pinia</a> for managing state in a Vue.js store</li>
           <li>How you can use <a href="https://docs.sentry.io/platforms/javascript/guides/vue/" target="_blank">Sentry's Vue SDK</a> and Pinia integrations for error monitoring and tracing to get performance insights.</li>
         </ul>
-      </div>
+      </a>
       <div class="row">
         <router-link to="/products" class="card card-2">
           <h3>View our products <span class="icon">🔗</span></h3>
@@ -48,10 +48,27 @@ function closeModal() {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   padding: 1rem;
   box-sizing: border-box;
-  font-family: 'Papyrus', sans-serif; /* Apply Papyrus font */
+  font-family: 'Papyrus', sans-serif;
+  position: relative;
+}
+
+.landing-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    transparent,
+    rgba(224, 216, 180, 0.05) 40%,
+    rgba(224, 216, 180, 0.1) 60%
+  );
+  pointer-events: none;
 }
 
 .flex-container {
@@ -82,6 +99,8 @@ function closeModal() {
   cursor: pointer;
   padding: 1rem;
   transition: box-shadow 0.3s ease, background 0.3s ease;
+  text-decoration: none; /* Remove underline from links */
+  color: inherit; /* Inherit text color */
 }
 
 .card-1 {

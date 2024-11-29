@@ -26,7 +26,7 @@ export default ({ mode }) => {
         project: "vue-store-pinia",
         authToken: env.SENTRY_AUTH_TOKEN,
         bundleSizeOptimizations: {
-          excludeDebugStatements: true,
+          // excludeDebugStatements: true,
           // excludePerformanceMonitoring: true, // Only if you added browserTracingIntegration
           // excludeReplayIframe: true,         // Only if you added replayIntegration
           // excludeReplayShadowDom: true,      // Only if you added replayIntegration
