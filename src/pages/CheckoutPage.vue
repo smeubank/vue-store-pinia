@@ -24,7 +24,7 @@
           <p>{{ item.quantity }} x {{ item.name }}: ${{ (parseFloat(item.price.replace('$', '')) * item.quantity).toFixed(2) }}</p>
         </div>
         <p class="total">Total: ${{ totalCartValue }}</p>
-        <button class="checkout-button">Checkout</button>
+        <button class="checkout-button" @click="handleCheckout">Checkout</button>
       </div>
     </div>
   </div>
@@ -89,6 +89,10 @@ function decreaseQuantity(itemId) {
   } else {
     cartStore.removeItem(itemId)
   }
+}
+
+function handleCheckout() {
+  throw new Error('Checkout functionality not implemented yet!')
 }
 </script>
 

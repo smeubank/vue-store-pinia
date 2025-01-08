@@ -19,7 +19,12 @@ export default ({ mode }) => {
     },
     plugins: [
       vue(),
-
+      // Add the Codecov plugin
+      codecovVitePlugin({
+        enableBundleAnalysis: true,
+        bundleName: "vue-store-pinia", // Replace with your bundle project name
+        uploadToken: process.env.VITE_CODECOV_TOKEN,
+      }),
       // Put the Sentry vite plugin after all other plugins
       sentryVitePlugin({
         org: "steven-eubank",
@@ -32,12 +37,6 @@ export default ({ mode }) => {
           // excludeReplayShadowDom: true,      // Only if you added replayIntegration
           // excludeReplayWorker: true,         // Only if you added replayIntegration
         },
-      }),
-      // Add the Codecov plugin
-      codecovVitePlugin({
-        enableBundleAnalysis: true,
-        bundleName: "vue-store-pinia", // Replace with your bundle project name
-        uploadToken: process.env.VITE_CODECOV_TOKEN,
       }),
     ],
 
