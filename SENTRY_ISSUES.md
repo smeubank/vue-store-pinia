@@ -59,51 +59,13 @@ if (Sentry.logger) {
 
 ---
 
-## Issue 3: Distributed Tracing Broken in Deno Edge Functions
-
-**Status:** 🐛 SDK Bug
-
-**Problem:** When calling a Deno Edge Function from FastAPI with `sentry-trace` and `baggage` headers, the trace **does not continue** - it creates a separate, disconnected trace.
-
-**Expected:**
-```
-Single Trace:
-  └─ Vue Frontend
-      └─ FastAPI POST /orders
-          └─ Edge Function create-order (continued)
-              └─ Database operations
-```
-
-**Actual:**
-```
-Trace 1: Vue → FastAPI
-Trace 2: Edge Function (disconnected)
-```
-
-**Evidence:** Sentry Issue #6980613071 - Error in Edge Function appears as standalone trace with no parent context.
-
-**Attempted solutions:**
-- `Sentry.continueTrace(req.headers)` - doesn't work/doesn't exist
-- Manually parsing `sentry-trace` header - no API to set parent trace
-- `Sentry.getActiveSpan()` - always returns undefined
-
-**Questions for Sentry team:**
-1. How to continue a trace from HTTP headers in Deno?
-2. Does the Deno SDK support trace continuation at all?
-3. Need example of distributed tracing: HTTP server → Edge Function
-
-**Reproduction:** This repository demonstrates the issue - see `api/main.py` and `supabase/functions/create-order/index.ts`
-
----
-
 ## Summary
 
 | Issue | Type | Action |
 |-------|------|--------|
 | Supabase integration limited to JS | Feature Request | Tracked in [#85338](https://github.com/getsentry/sentry/issues/85338) |
 | Deno logging docs missing | Documentation | Add Deno examples to logs docs |
-| Deno distributed tracing broken | Bug | Fix or document trace continuation API |
 
 ---
 
-**Repository:** This codebase can be used to test and reproduce the distributed tracing issue.
+**Repository:** This codebase demonstrates Sentry observability across Vue.js, FastAPI, and Supabase Edge Functions.
