@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
     "dev:frontend": "vite",
-    "dev:backend": "uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload",
+    "dev:backend": "~/Library/Python/3.9/bin/uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload",
     "build": "vite build",
     "preview": "vite preview",
     "serve": "vite preview",
@@ -20,8 +20,10 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.6.0",
     "@sentry/vite-plugin": "^2.22.5",
-    "@sentry/vue": "^8.37.0",
+    "@sentry/vue": "^10.22.0",
+    "@supabase/supabase-js": "^2.48.1",
     "pinia": "^2.1.0",
+    "supabase": "^2.54.11",
     "vue": "^3.3.0",
     "vue-router": "^4.2.0"
   },
