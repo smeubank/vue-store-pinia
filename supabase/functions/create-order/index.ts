@@ -10,6 +10,7 @@ Sentry.init({
   sendDefaultPii: true,
   // v10 change: enableLogs is now a top-level option (was _experiments.enableLogs in v9)
   enableLogs: true,
+  debug: true,
 })
 
 // Set region and execution_id as custom tags
@@ -52,19 +53,25 @@ Deno.serve(async (req) => {
     })
   }
 
-  // Start a span for this Edge Function, continuing the trace from FastAPI
-  return await Sentry.startSpan(
+  // Continue the distributed trace from FastAPI using Sentry.continueTrace()
+  // This properly extracts and continues the trace context from headers
+  return Sentry.continueTrace(
     {
-      name: 'POST /create-order',
-      op: 'function.edge',
-      attributes: {
-        'edge.function': 'create-order',
-        'edge.region': Deno.env.get('SB_REGION') || 'unknown',
-      },
-      // Continue trace from incoming request
-      ...(sentryTrace && { traceId: sentryTrace }),
+      sentryTrace,
+      baggage,
     },
-    async (span) => {
+    () => {
+      // Start a span for this Edge Function within the continued trace
+      return Sentry.startSpan(
+        {
+          name: 'POST /create-order',
+          op: 'function.edge',
+          attributes: {
+            'edge.function': 'create-order',
+            'edge.region': Deno.env.get('SB_REGION') || 'unknown',
+          },
+        },
+        async (span) => {
       try {
         // Log the incoming request
         Sentry.addBreadcrumb({
@@ -285,6 +292,8 @@ Deno.serve(async (req) => {
           }
         )
       }
+        }
+      )
     }
   )
 })
