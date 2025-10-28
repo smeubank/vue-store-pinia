@@ -1,7 +1,9 @@
 fastapi
 uvicorn
-sentry-sdk
+sentry-sdk[fastapi]==2.19.2
+supabase>=2.10.0
 aiohttp
 httpx
 pytest
 pytest-cov
+python-dotenv

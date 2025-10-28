@@ -10,7 +10,7 @@
           <img :src="item.image" :alt="item.name" class="cart-item-image" />
           <div class="cart-item-details">
             <h3>{{ item.name }}</h3>
-            <p>{{ item.quantity }} x {{ item.price }} = ${{ (parseFloat(item.price.replace('$', '')) * item.quantity).toFixed(2) }}</p>
+            <p>{{ item.quantity }} x ${{ parseFloat(item.price).toFixed(2) }} = ${{ (parseFloat(item.price) * item.quantity).toFixed(2) }}</p>
           </div>
           <div class="cart-item-controls">
             <button @click="increaseQuantity(item.id)">▲</button>
@@ -21,10 +21,12 @@
       <div class="cart-summary">
         <h3>Summary</h3>
         <div v-for="item in cartItems" :key="item.id" class="summary-item">
-          <p>{{ item.quantity }} x {{ item.name }}: ${{ (parseFloat(item.price.replace('$', '')) * item.quantity).toFixed(2) }}</p>
+          <p>{{ item.quantity }} x {{ item.name }}: ${{ (parseFloat(item.price) * item.quantity).toFixed(2) }}</p>
         </div>
         <p class="total">Total: ${{ totalCartValue }}</p>
-        <button class="checkout-button" @click="handleCheckout">Checkout</button>
+        <button class="checkout-button" @click="handleCheckout" :disabled="isCheckingOut">
+          {{ isCheckingOut ? 'Processing...' : 'Checkout' }}
+        </button>
       </div>
     </div>
   </div>
@@ -34,14 +36,17 @@
 import { onMounted, computed, ref } from 'vue'
 import { useCartStore } from '../store/cart'
 import { storeToRefs } from 'pinia'
+import * as Sentry from '@sentry/vue'
+import { supabase } from '../main'
 
 const cartStore = useCartStore()
 const { items: cartItems } = storeToRefs(cartStore)
 const errorMessage = ref('')
+const isCheckingOut = ref(false)
 
 onMounted(async () => {
   try {
-    const baseUrl = 'https://vue-store-pinia.onrender.com' || 'http://localhost:8000';
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
     const productsResponse = await fetch(`${baseUrl}/products`);
     if (!productsResponse.ok) {
       throw new Error('Failed to fetch products');
@@ -57,7 +62,7 @@ onMounted(async () => {
       return {
         ...cartItem,
         name: product.name,
-        price: String(product.price),
+        price: product.price, // Keep as number
         image: product.image
       };
     });
@@ -71,7 +76,7 @@ onMounted(async () => {
 
 const totalCartValue = computed(() => {
   return cartItems.value.reduce((total, item) => {
-    return total + parseFloat(item.price.replace('$', '')) * item.quantity
+    return total + parseFloat(item.price) * item.quantity
   }, 0).toFixed(2)
 })
 
@@ -91,8 +96,83 @@ function decreaseQuantity(itemId) {
   }
 }
 
-function handleCheckout() {
-  throw new Error('Checkout functionality not implemented yet!')
+async function handleCheckout() {
+  if (isCheckingOut.value) return
+  
+  isCheckingOut.value = true
+  
+  try {
+    // Get current user or generate anonymous UUID
+    const { data: { user } } = await supabase.auth.getUser()
+    // Generate a consistent anonymous user ID (could be stored in localStorage for repeat visits)
+    const userId = user?.id || crypto.randomUUID()
+    
+    console.log('Starting checkout process', { userId, itemCount: cartItems.value.length })
+    Sentry.logger.info('Starting checkout process', { 
+      userId, 
+      itemCount: cartItems.value.length,
+      totalValue: totalCartValue.value 
+    })
+    
+    // Transform cart items to order items format
+    const orderItems = cartItems.value.map(item => ({
+      product_id: item.id,
+      quantity: item.quantity,
+      price_at_purchase: parseFloat(item.price)
+    }))
+    
+    const orderData = {
+      user_id: userId,
+      items: orderItems
+    }
+    
+    console.log('Submitting order to API', orderData)
+    Sentry.logger.info('Submitting order to API', { orderData })
+    
+    // Call the FastAPI backend which will call the Edge Function
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+    const response = await fetch(`${baseUrl}/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(orderData)
+    })
+    
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.detail || 'Failed to create order')
+    }
+    
+    const result = await response.json()
+    const orderId = result.order?.id
+    
+    console.log('✅ Order created successfully!', { orderId })
+    Sentry.logger.info(Sentry.logger.fmt`Order created successfully! Order ID: ${orderId}`, { 
+      orderId,
+      userId,
+      totalValue: totalCartValue.value,
+      itemCount: cartItems.value.length
+    })
+    
+    // Clear the cart
+    cartStore.setItems([])
+    
+    // Show success message
+    alert(`🎉 Order created successfully!\n\nOrder ID: ${orderId}\n\nCheck Sentry to see the distributed trace across:\n- Vue Frontend\n- FastAPI Backend\n- Supabase Edge Function\n- Supabase Database`)
+    
+  } catch (error) {
+    console.error('❌ Checkout failed:', error.message)
+    Sentry.logger.error(Sentry.logger.fmt`Checkout failed: ${error.message}`, { 
+      error: error.message,
+      stack: error.stack
+    })
+    Sentry.captureException(error)
+    
+    alert(`❌ Checkout failed: ${error.message}\n\nPlease make sure:\n1. The backend is running\n2. The Edge Function is deployed\n3. Check the console for details`)
+  } finally {
+    isCheckingOut.value = false
+  }
 }
 </script>
 
@@ -196,6 +276,11 @@ function handleCheckout() {
   cursor: pointer;
   width: 100%;
   margin-top: 1rem;
+}
+
+.checkout-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .error-card {

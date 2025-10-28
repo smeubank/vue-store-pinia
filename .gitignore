@@ -5,6 +5,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+SECURITY_AUDIT.md
+
 # Runtime data
 pids
 *.pid
@@ -124,6 +126,9 @@ lerna-debug.log*
 
 # Sentry Config File
 .env.sentry-build-plugin
+
+# Security audit (internal use only)
+SECURITY_AUDIT.md
 
 .venv
 

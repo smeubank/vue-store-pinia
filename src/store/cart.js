@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia'
+import * as Sentry from '@sentry/vue'
 
 export const useCartStore = defineStore('cart', {
   state: () => {
     console.log('Cart state created')
+    Sentry.logger.info('Cart state created')
     return {
       items: []
     }
@@ -13,23 +15,47 @@ export const useCartStore = defineStore('cart', {
       if (existingItem) {
         existingItem.quantity += 1
         console.log(`Increased quantity of ${item.name} to ${existingItem.quantity}`)
+        Sentry.logger.info(
+          Sentry.logger.fmt`Increased quantity of ${item.name} to ${existingItem.quantity}`,
+          { productId: item.id, quantity: existingItem.quantity, action: 'increase' }
+        )
       } else {
         this.items.push({ ...item, quantity: 1 })
         console.log(`Added ${item.name} to cart`)
+        Sentry.logger.info(
+          Sentry.logger.fmt`Added ${item.name} to cart`,
+          { productId: item.id, productName: item.name, action: 'add' }
+        )
       }
-      console.log('Current cart state:', JSON.stringify(this.items, null, 2))
+      Sentry.logger.debug('Current cart state', { 
+        itemCount: this.items.length,
+        totalItems: this.totalItems,
+        cartValue: this.items.reduce((sum, i) => sum + (i.price * i.quantity), 0)
+      })
     },
     removeItem(itemId) {
       const index = this.items.findIndex(item => item.id === itemId)
       if (index !== -1) {
-        console.log(`Removed ${this.items[index].name} from cart`)
+        const itemName = this.items[index].name
+        console.log(`Removed ${itemName} from cart`)
+        Sentry.logger.info(
+          Sentry.logger.fmt`Removed ${itemName} from cart`,
+          { productId: itemId, productName: itemName, action: 'remove' }
+        )
         this.items.splice(index, 1)
       }
-      console.log('Current cart state:', JSON.stringify(this.items, null, 2))
+      console.log('Current cart state:', this.items)
+      Sentry.logger.debug('Current cart state', { 
+        itemCount: this.items.length,
+        totalItems: this.totalItems 
+      })
     },
     setItems(items) {
       this.items = items
-      console.log('Cart items set:', JSON.stringify(this.items, null, 2))
+      Sentry.logger.info('Cart items set', { 
+        itemCount: items.length,
+        totalItems: this.totalItems 
+      })
     }
   },
   getters: {
