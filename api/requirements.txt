@@ -1,6 +1,6 @@
 fastapi
 uvicorn
-sentry-sdk[fastapi]==2.19.2
+sentry-sdk[fastapi]>=2.35.0
 supabase>=2.10.0
 aiohttp
 httpx
