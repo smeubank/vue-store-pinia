@@ -2,8 +2,11 @@ import * as Sentry from 'npm:@sentry/deno@^10.0.0'
 import { createClient } from 'npm:@supabase/supabase-js@2'
 
 // Initialize Sentry (v10 - updated from v9)
+// Use environment variable for DSN to allow different configs per environment
+const sentryDsn = Deno.env.get('SENTRY_DSN') || 'https://2063cf707cf29518cc1016545dfc0b0a@o673219.ingest.us.sentry.io/4510269126279168'
+
 Sentry.init({
-  dsn: 'https://2063cf707cf29518cc1016545dfc0b0a@o673219.ingest.us.sentry.io/4510269126279168',
+  dsn: sentryDsn,
   defaultIntegrations: false,
   tracesSampleRate: 1.0,
   profilesSampleRate: 1.0,
@@ -19,9 +22,33 @@ Sentry.setTag('region', Deno.env.get('SB_REGION') || 'unknown')
 Sentry.setTag('execution_id', Deno.env.get('SB_EXECUTION_ID') || 'unknown')
 
 // Create Supabase client using built-in environment variables
-// These are automatically provided by Supabase Edge Runtime
-const supabaseUrl = Deno.env.get('SUPABASE_URL')!
-const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+// Supabase automatically provides SUPABASE_URL in edge runtime
+const supabaseUrl = Deno.env.get('SUPABASE_URL')
+const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
+
+// Check for required environment variables
+if (!supabaseUrl || !supabaseServiceKey) {
+  const errorMsg = 'Missing required environment variables'
+  console.error('❌ Configuration error:', {
+    hasSupabaseUrl: !!supabaseUrl,
+    hasServiceKey: !!supabaseServiceKey
+  })
+  
+  if (Sentry.logger) {
+    Sentry.logger.error('Edge function configuration error', {
+      error: errorMsg,
+      hasSupabaseUrl: !!supabaseUrl,
+      hasServiceKey: !!supabaseServiceKey
+    })
+  }
+  
+  // Even if config is wrong, we can still send this error to Sentry before failing
+  Sentry.captureException(new Error(errorMsg))
+  await Sentry.flush(2000)
+  
+  throw new Error(errorMsg)
+}
+
 const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
 interface OrderItem {
