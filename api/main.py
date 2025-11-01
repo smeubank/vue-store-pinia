@@ -37,6 +37,7 @@ def filter_transactions(event, hint):
 # Initialize Sentry with integrations and logging
 sentry_sdk.init(
     dsn="https://b8233ed9639fc2fa0e0e5b1727ea893a@o673219.ingest.us.sentry.io/4508087188455424",
+    enable_logs=True,  # Enable Sentry structured logs
     integrations=[
         FastApiIntegration(),
         StarletteIntegration(),
