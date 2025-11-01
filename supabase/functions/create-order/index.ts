@@ -2,11 +2,8 @@ import * as Sentry from 'npm:@sentry/deno@^10.0.0'
 import { createClient } from 'npm:@supabase/supabase-js@2'
 
 // Initialize Sentry (v10 - updated from v9)
-// Use environment variable for DSN to allow different configs per environment
-const sentryDsn = Deno.env.get('SENTRY_DSN') || 'https://2063cf707cf29518cc1016545dfc0b0a@o673219.ingest.us.sentry.io/4510269126279168'
-
 Sentry.init({
-  dsn: sentryDsn,
+  dsn: 'https://2063cf707cf29518cc1016545dfc0b0a@o673219.ingest.us.sentry.io/4510269126279168',
   defaultIntegrations: false,
   tracesSampleRate: 1.0,
   profilesSampleRate: 1.0,
