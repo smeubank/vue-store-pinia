@@ -12,7 +12,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from urllib.parse import urlparse
 import aiohttp
-import json
 from supabase import create_client, Client
 from dotenv import load_dotenv
 
@@ -375,84 +374,6 @@ async def trigger_error(request: Request):
     })
     
     division_by_zero = 1 / 0
-
-
-# Replace with your actual Sentry host and project IDs
-SENTRY_HOST = "o673219.ingest.us.sentry.io"
-SENTRY_PROJECT_IDS = ["4508059881242624"]
-
-@app.post("/tunnel")
-async def sentry_tunnel(request: Request):
-    try:
-        # Read the raw bytes from the request body
-        envelope_bytes = await request.body()
-        
-        # Decode bytes to string and split into lines
-        envelope = envelope_bytes.decode('utf-8')
-        pieces = envelope.split('\n')
-        header_str = pieces[0]
-        
-        # Parse the envelope header as JSON
-        header = json.loads(header_str)
-        dsn = header.get('dsn', '')
-        
-        # Log the received DSN
-        logger.debug("Received Sentry tunnel request", extra={
-            "dsn": dsn,
-            "envelope_size": len(envelope_bytes)
-        })
-        
-        # Parse the DSN to extract hostname and project ID
-        dsn_parsed = urlparse(dsn)
-        hostname = dsn_parsed.hostname
-        project_id = dsn_parsed.path.strip('/')
-        
-        # Validate the hostname and project ID
-        if hostname != SENTRY_HOST:
-            logger.error("Invalid Sentry hostname", extra={
-                "received_hostname": hostname,
-                "expected_hostname": SENTRY_HOST
-            })
-            raise Exception(f"Invalid Sentry hostname: {hostname}")
-        
-        if not project_id or project_id not in SENTRY_PROJECT_IDS:
-            logger.error("Invalid Sentry project ID", extra={
-                "received_project_id": project_id,
-                "allowed_project_ids": SENTRY_PROJECT_IDS
-            })
-            raise Exception(f"Invalid Sentry project ID: {project_id}")
-        
-        # Construct the upstream Sentry URL
-        upstream_sentry_url = f"https://{SENTRY_HOST}/api/{project_id}/envelope/"
-        
-        logger.debug("Forwarding envelope to Sentry", extra={
-            "upstream_url": upstream_sentry_url,
-            "project_id": project_id
-        })
-        
-        # Forward the envelope to Sentry
-        async with aiohttp.ClientSession() as session:
-            async with session.post(
-                upstream_sentry_url,
-                data=envelope_bytes,
-                headers={'Content-Type': 'application/x-sentry-envelope'}
-            ) as resp:
-                if resp.status != 200:
-                    logger.error("Upstream Sentry returned error", extra={
-                        "status_code": resp.status,
-                        "project_id": project_id
-                    })
-                    raise Exception(f"Upstream Sentry returned status {resp.status}")
-        
-        logger.debug("Successfully forwarded to Sentry", extra={"project_id": project_id})
-        # Return success response
-        return Response(status_code=200)
-    except Exception as e:
-        logger.error("Error tunneling to Sentry", extra={
-            "error": str(e),
-            "error_type": type(e).__name__
-        })
-        return JSONResponse(content={'error': 'Error tunneling to Sentry'}, status_code=500)
 
 if __name__ == "__main__":
     import uvicorn
