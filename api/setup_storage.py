@@ -16,7 +16,11 @@ SUPABASE_URL = os.getenv('SUPABASE_URL')
 SUPABASE_SERVICE_KEY = os.getenv('SUPABASE_SERVICE_ROLE_KEY')
 
 if not SUPABASE_URL or not SUPABASE_SERVICE_KEY:
-    print("Error: Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in environment")
+    print("Error: Missing required environment variables:")
+    print("  - SUPABASE_URL")
+    print("  - SUPABASE_SERVICE_ROLE_KEY")
+    print("\nPlease set these in api/.env file")
+    print("Get your service role key from: Supabase Dashboard → Settings → API")
     exit(1)
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
