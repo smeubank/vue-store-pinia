@@ -33,12 +33,6 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIU
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-// Determine the tunnel URL based on the environment
-const isProduction = import.meta.env.PROD
-const tunnelUrl = isProduction
-  ? 'https://vue-store-pinia.onrender.com/tunnel'
-  : 'http://localhost:8000/tunnel'
-
 Sentry.init({
   app,
   dsn: import.meta.env.PUBLIC_SENTRY_DSN || 'https://4a85c87c7894458aff8578d0f2d2dd89@o673219.ingest.us.sentry.io/4508059881242624',
@@ -58,7 +52,6 @@ Sentry.init({
       errors: true,
     }),
   ],
-  tunnel: tunnelUrl, // Use the determined tunnel URL
   sendDefaultPii: true, // Enable sending of headers and cookies
   enableLogs: true, // Enable Sentry structured logs
   tracesSampleRate: 1.0,
