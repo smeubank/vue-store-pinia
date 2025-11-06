@@ -28,8 +28,8 @@ const pinia = createPinia()
 const app = createApp(App)
 
 // Initialize Supabase client
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://sdmizzrivujzvxocsuhw.supabase.co'
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkbWl6enJpdnVqenZ4b2NzdWh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE2NTExMDEsImV4cCI6MjA3NzIyNzEwMX0.8JVgE29qln0X2vskBrABBd3zI6VGFwAXbmHM3MPuw1U'
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://btaarvixxfftvmjeupne.supabase.red'
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0YWFydml4eGZmdHZtamV1cG5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE3NTE2NzUsImV4cCI6MjA3NzMyNzY3NX0.dKFJbyPBRHCjG3kF3wctMOZfm601RuKIDUoRBG-l5_o'
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
@@ -62,7 +62,7 @@ Sentry.init({
   sendDefaultPii: true, // Enable sending of headers and cookies
   enableLogs: true, // Enable Sentry structured logs
   tracesSampleRate: 1.0,
-  tracePropagationTargets: ['localhost', 'sdmizzrivujzvxocsuhw.supabase.co', /\/.*/],
+  tracePropagationTargets: ['localhost', 'btaarvixxfftvmjeupne.supabase.red', /\/.*/],
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
 })
